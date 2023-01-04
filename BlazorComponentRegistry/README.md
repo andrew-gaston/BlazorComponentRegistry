@@ -38,7 +38,7 @@ public static async Task Main(string[] args)
 @inherits RegisterableComponent
 ```
 
-### Manually Register and Unregister a component with the ComponentRegistryService. 
+### Manually Register and Unregister a component with the ComponentRegistryService 
 Your component should implement IDisposable so that the component instance becomes untracked when the component is disposed.
 
 ``` csharp
@@ -61,6 +61,7 @@ Your component should implement IDisposable so that the component instance becom
 ```
 
 The RegisterComponent method will automatically generate a GUID string to uniquely identify the instance of the component
+
 However, you can manually set its GUID if you wish. If a component with a duplicate GUID is registered, the RegisterComponent method will throw an exception.
 
 ```csharp
@@ -94,7 +95,6 @@ To view the currently active, registered components, use the ComponentRegistry c
 - Recursive (self-referencing) Components are not supported.
 
 ## Roadmap
-- Remove dependency on Blazorise.TreeView
 - Hovering over/selecting a component in the tree should highlight the component in the page
 - Hovering over/selecting a component in the tree should allow you to view its scoped css
 

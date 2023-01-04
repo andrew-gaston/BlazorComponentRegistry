@@ -1,0 +1,45 @@
+﻿<div class="container">
+    @if (Trunk != null)
+    {
+        <ul class="@(string.IsNullOrEmpty(Trunk.ParentComponentGuid) ? "parentUl": "")">
+            <li>
+                @if (Trunk.ChildComponents != null && Trunk.ChildComponents.Any())
+                {
+                    <span style="@($"{(Trunk == SelectedEntry ? "background-color: black;" : "")}")" @onclick="@(() => SpanToggle(Trunk))" class="caret @(Trunk.Expanded ? "caret-down" : "")">
+                        @($"<{Trunk.ComponentName}>")
+                    </span>
+                    <ul class="@(Trunk.Expanded ? "active" : "nested")">
+                        @foreach (var child in Trunk.ChildComponents)
+                        {
+                            @* We have to listen for the EventCallBack here and allow the selected entry to bubble up 
+                            through a series of EventCallBacks to reach the ComponentRegistry component that will ultimately handle it*@
+                            <ComponentRegistryTree SelectedEntryChanged="SetSelectedEntry" Trunk="child" />
+                        }
+                    </ul>
+                }
+                else
+                {
+                    <span style="margin-left: 1em;@($"{(Trunk == SelectedEntry ? "background-color: black;" : "")}")" @onclick="@(() => SetSelectedEntry(Trunk))">@($"<{Trunk.ComponentName}>")</span>
+                }
+            </li>
+        </ul>
+    }
+</div>
+@code {
+    // Based on this great post from MJ Schanne in the Microsoft Tech Community. Thank you MJ!
+    // https://techcommunity.microsoft.com/t5/healthcare-and-life-sciences/creating-a-generic-tree-view-blazor-component/ba-p/3640237
+    [Parameter] public ComponentRegistryEntry Trunk { get; set; }
+    [Parameter] public EventCallback<ComponentRegistryEntry> SelectedEntryChanged { get; set; }
+    [Parameter] public ComponentRegistryEntry SelectedEntry { get; set; }
+
+    private void SpanToggle(ComponentRegistryEntry entry)
+    {
+        entry.Expanded = !entry.Expanded;
+        SetSelectedEntry(entry);
+    }
+
+    private void SetSelectedEntry(ComponentRegistryEntry entry)
+    {
+        SelectedEntryChanged.InvokeAsync(entry);
+    }
+}

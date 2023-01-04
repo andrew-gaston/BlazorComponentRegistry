@@ -1,0 +1,96 @@
+﻿.component-parameters-wrapper {
+    text-indent: 1em;
+}
+
+#param-col {
+    border-left: 1px solid #515252;
+}
+
+    .component-parameters-wrapper label {
+        margin: 0;
+    }
+
+    .component-parameters-wrapper ul {
+        list-style: none;
+    }
+
+.registry-wrapper {
+    background-color: #171818;
+    color: #5c2d91;
+/*    position: absolute;
+    bottom: 0;
+    left: 60%;
+    width: 40%;*/
+    margin-bottom: 1%;
+    border-top: 1px solid #515252;
+    border-bottom: 1px solid #515252;
+    border-right: 1px solid #515252;
+    border-left: 1px solid #515252;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.component-tree-wrapper {
+    display: flex;
+}
+
+.component-tree-toggle-btn {
+    margin-top: 5px;
+    border-radius: 10px;
+}
+
+.btn-active {
+    color: #5c2d91;
+    background-color: white;
+    border: 1px solid black;
+}
+
+.btn-inactive {
+    background-color: #5c2d91;
+    color: white;
+    border: 1px solid white;
+}
+
+.registry-title {
+    border-left: 1px solid #515252;
+    border-right: 1px solid #515252;
+    border-bottom: 1px solid #515252;
+    border-radius: 10px;
+}
+/* Style the caret/arrow */
+.caret {
+    user-select: none; /* Prevent text selection */
+}
+
+    /* Create the caret/arrow with a unicode, and style it */
+    .caret::before {
+        content: "\25B6";
+        color: #5c2d91;
+        display: inline-block;
+        margin-right: .25em;
+        margin-left: .25em;
+        font-size: 1em;
+    }
+
+/* Rotate the caret/arrow icon when clicked on (using JavaScript) */
+.caret-down::before {
+    transform: rotate(90deg);
+}
+
+.blazor-img {
+    margin-right: 6px;
+    margin-top: 1px;
+    float: right;
+    height: 25px;
+    width: 25px;
+}
+
+h5 {
+    display: inline;
+    color: #5c2d91;
+    font-size: 1.5em;
+}
+
+.flex-container {
+    flex: auto;
+}

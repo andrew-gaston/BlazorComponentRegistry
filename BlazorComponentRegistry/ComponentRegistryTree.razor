@@ -1,11 +1,12 @@
-﻿<div class="container">
+﻿@inject IComponentRegistryService ComponentRegistry
+<div class="container">
     @if (Trunk != null)
     {
         <ul class="@(string.IsNullOrEmpty(Trunk.ParentComponentGuid) ? "parentUl": "")">
             <li>
                 @if (Trunk.ChildComponents != null && Trunk.ChildComponents.Any())
                 {
-                    <span style="@($"{(Trunk == SelectedEntry ? "background-color: black;" : "")}")" @onclick="@(() => SpanToggle(Trunk))" class="caret @(Trunk.Expanded ? "caret-down" : "")">
+                    <span style="@SelectedEntryStyle" @onclick="@(() => SpanToggle(Trunk))" class="caret @(Trunk.Expanded ? "caret-down" : "")">
                         @($"<{Trunk.ComponentName}>")
                     </span>
                     <ul class="@(Trunk.Expanded ? "active" : "nested")">
@@ -13,13 +14,13 @@
                         {
                             @* We have to listen for the EventCallBack here and allow the selected entry to bubble up 
                             through a series of EventCallBacks to reach the ComponentRegistry component that will ultimately handle it*@
-                            <ComponentRegistryTree SelectedEntryChanged="SetSelectedEntry" Trunk="child" />
+                            <ComponentRegistryTree SelectedEntry="SelectedEntry" SelectedEntryChanged="SetSelectedEntry" Trunk="child" />
                         }
                     </ul>
                 }
                 else
                 {
-                    <span style="margin-left: 1em;@($"{(Trunk == SelectedEntry ? "background-color: black;" : "")}")" @onclick="@(() => SetSelectedEntry(Trunk))">@($"<{Trunk.ComponentName}>")</span>
+                    <span style="@SelectedEntryStyle" @onclick="@(() => SetSelectedEntry(Trunk))">@($"<{Trunk.ComponentName}>")</span>
                 }
             </li>
         </ul>
@@ -31,6 +32,8 @@
     [Parameter] public ComponentRegistryEntry Trunk { get; set; }
     [Parameter] public EventCallback<ComponentRegistryEntry> SelectedEntryChanged { get; set; }
     [Parameter] public ComponentRegistryEntry SelectedEntry { get; set; }
+    private bool IsSelectedEntry => Trunk == SelectedEntry;
+    private string SelectedEntryStyle => IsSelectedEntry ? "background-color: black; margin-left: 1em; border-radius: 10px; padding: 2px;" : "margin-left: 1em;";
 
     private void SpanToggle(ComponentRegistryEntry entry)
     {

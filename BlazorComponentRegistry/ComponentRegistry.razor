@@ -1,5 +1,8 @@
 ﻿@using BlazorComponentRegistry
+@inherits RegisterableComponent
 @inject IComponentRegistryService componentRegistry
+@implements IDisposable
+
 <div class="registry-wrapper">
     <div class="registry-title">
         <span style="display: inline;" @onclick="ToggleDisplayTree" class="caret @(DisplayTree ? "caret-down" : "")" title="Toggle the visibility of the component registry tree main area.">
@@ -11,12 +14,13 @@
     {
         <div class="component-tree-wrapper @(DisplayTree ? "expanded" : "")">
             <div style="flex:auto;">
+                <button style="border-radius: 10px; background-color: #5c2d91; color: black; margin: 5px;" @onclick="CollapseTree" @onclick:preventDefault>Collapse Tree</button>
                 @* This only operates on the root level components, which then recurse inside the ComponentRegistryTree component.*@
                 @if (components != null && components.Count > 0)
                 {
                     @foreach (ComponentRegistryEntry entry in components)
                     {
-                        <ComponentRegistryTree Trunk="entry" SelectedEntryChanged="SetSelectedEntry"></ComponentRegistryTree>
+                        <ComponentRegistryTree SelectedEntry="selectedEntry" Trunk="entry" SelectedEntryChanged="SetSelectedEntry"></ComponentRegistryTree>
                     }          
                 }
             </div>
@@ -26,7 +30,7 @@
                     <div class="component-parameters-wrapper">
                         <label>Parameters:</label>
                         <ul>
-                            @if (selectedEntry.Parameters != null)
+                            @if (selectedEntry.Parameters != null && selectedEntry.Parameters.Count > 0)
                             {
                                 @foreach (var param in selectedEntry.Parameters)
                                 {
@@ -89,6 +93,7 @@
                             }
                         </ul>
                     </div>
+                    @*<label>Scoped CSS</label>*@
                 }
             </div>
         </div>
@@ -101,6 +106,7 @@
     private IList<ComponentRegistryEntry> ExpandedNodes = new List<ComponentRegistryEntry>();
     private ComponentRegistryEntry selectedEntry;
     private bool firstLoad = true;
+
     private async void registry_ComponentTreeChanged()
     {
         // https://stackoverflow.com/questions/56477829/how-to-fix-the-current-thread-is-not-associated-with-the-renderers-synchroniza
@@ -115,9 +121,11 @@
     {
         if (firstLoad)
         {
+            components = componentRegistry.GetComponents();
             componentRegistry.ComponentTreeChanged += registry_ComponentTreeChanged;
             firstLoad = false;
         }
+        base.OnInitialized();
     }
 
     private void SetSelectedEntry(ComponentRegistryEntry entry)
@@ -128,5 +136,16 @@
     private void ToggleDisplayTree()
     {
         DisplayTree = !DisplayTree;
+    }
+
+    private void CollapseTree()
+    {
+        componentRegistry.CollapseTree();
+        selectedEntry = null;
+    }
+
+    public void Dispose()
+    {
+        componentRegistry.ComponentTreeChanged -= registry_ComponentTreeChanged;
     }
 }

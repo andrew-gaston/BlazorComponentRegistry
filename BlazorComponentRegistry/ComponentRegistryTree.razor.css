@@ -12,6 +12,8 @@ ul, .parentUl {
 
 /* Remove margins and padding from the parent ul */
 	.parentUl li span:hover {
+		border-radius: 10px;
+		padding: 2px;
 		background-color: black;
 		cursor: pointer;
 		user-select: none;
@@ -31,7 +33,7 @@ ul, .parentUl {
 		font-size: 1em;
 	}
 
-/* Rotate the caret/arrow icon when clicked on (using JavaScript) */
+/* Rotate the caret/arrow icon when clicked on */
 .caret-down::before {
 	transform: rotate(90deg);
 }
@@ -41,7 +43,7 @@ ul, .parentUl {
 	display: none;
 }
 
-/* Show the nested list when the user clicks on the caret/arrow (with JavaScript) */
+/* Show the nested list when the user clicks on the caret/arrow */
 .active {
 	display: block;
 }

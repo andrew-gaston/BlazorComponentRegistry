@@ -10,5 +10,6 @@ namespace BlazorComponentRegistry
         public void UnregisterComponent(string guid);
         public void UpdateComponentParameters(string guid, Dictionary<string, object?> parameters);
         public IImmutableList<ComponentRegistryEntry> GetComponents();
+        public void CollapseTree();
     }
 }

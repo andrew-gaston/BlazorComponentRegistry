@@ -9,6 +9,9 @@ namespace BlazorComponentRegistry
         public string ComponentGuid { get; internal set; }
         [Inject] IComponentRegistryService componentRegistry { get; set; }
         [Parameter] public string ParentComponentGuid { get; set; }
+        [Parameter] public bool IncludeInheritedProperties { get; set; } = false;
+        [Parameter] public bool IncludeNonParameterProperties { get; set; } = true;
+        [Parameter] public bool IncludeCascadingParameterProperties { get; set; } = true;
 
         protected override Task OnInitializedAsync()
         {
@@ -18,7 +21,7 @@ namespace BlazorComponentRegistry
 
         protected override void OnParametersSet()
         {
-            componentRegistry.UpdateComponentParameters(ComponentGuid, this.GetParameters());
+            componentRegistry.UpdateComponentParameters(ComponentGuid, this.GetPublicProperties(IncludeInheritedProperties, IncludeCascadingParameterProperties, IncludeNonParameterProperties));
             base.OnParametersSet();
         }
 

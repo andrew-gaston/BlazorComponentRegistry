@@ -23,12 +23,17 @@ public static async Task Main(string[] args)
 // Blazor Server Program.cs
 public static async Task Main(string[] args)
 {
-    var builder = WebAssemblyHostBuilder.CreateDefault(args);
-    builder.RootComponents.Add<App>("#app");
-    builder.RootComponents.Add<HeadOutlet>("head::after");
-    builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+    var builder = WebApplication.CreateBuilder(args);
+
+    // Add services to the container.
+    builder.Services.AddRazorPages();
+    builder.Services.AddServerSideBlazor();
     builder.Services.AddScoped<IComponentRegistryService, ComponentRegistryService>();
-    await builder.Build().RunAsync();
+    var app = builder.Build();
+
+    ...
+
+    app.Run();
 }
 ```
 

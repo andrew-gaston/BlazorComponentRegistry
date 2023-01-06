@@ -120,6 +120,25 @@ namespace BlazorComponentRegistry
             }
         }
 
+        public void CollapseTree()
+        {
+            Queue<ComponentRegistryEntry> componentQueue = new();
+            foreach (var component in _components)
+            {
+                componentQueue.Enqueue(component);
+                component.Expanded = false;
+            }
+            while (componentQueue.Count > 0)
+            {
+                var component = componentQueue.Dequeue();
+                component.Expanded = false;
+                foreach (ComponentRegistryEntry childComponent in component.ChildComponents)
+                {
+                    componentQueue.Enqueue(childComponent);
+                }
+            }
+        }
+
         public void UnregisterComponent(string guid)
         {
             DeleteEntryInTree(guid);
@@ -130,5 +149,7 @@ namespace BlazorComponentRegistry
         {
             return _components.ToImmutableList();
         }
+
+
     }
 }

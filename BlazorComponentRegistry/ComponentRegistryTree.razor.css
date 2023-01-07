@@ -10,13 +10,17 @@ ul, .parentUl {
 	padding: 0;
 }
 
-/* Remove margins and padding from the parent ul */
 	.parentUl li span:hover {
 		border-radius: 10px;
 		padding: 2px;
 		background-color: black;
 		cursor: pointer;
 		user-select: none;
+	}
+
+
+	.parentUl li {
+		margin-left: 1em;
 	}
 
 /* Style the caret/arrow */
@@ -46,4 +50,15 @@ ul, .parentUl {
 /* Show the nested list when the user clicks on the caret/arrow */
 .active {
 	display: block;
+}
+
+.selected {
+	background-color: black;
+	margin-left: 1em;
+	border-radius: 10px;
+	padding: 2px;
+}
+
+.not-selected {
+	margin-left: 1em;
 }

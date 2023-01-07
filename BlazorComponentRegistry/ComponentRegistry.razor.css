@@ -14,6 +14,17 @@
         list-style: none;
     }
 
+.collapse-btn {
+    border-radius: 10px;
+    background-color: #5c2d91;
+    color: black;
+    margin: 5px;
+}
+
+    .collapse-btn:hover {
+        background-color: #8866b2;
+    }
+
 .registry-wrapper {
     background-color: #171818;
     color: #5c2d91;
@@ -32,6 +43,7 @@
 
 .component-tree-wrapper {
     display: flex;
+    margin-bottom: 10px;
 }
 
 .component-tree-toggle-btn {
@@ -61,6 +73,10 @@
 .caret {
     user-select: none; /* Prevent text selection */
 }
+
+    .caret::before:hover {
+        color: #8866b2;
+    }
 
     /* Create the caret/arrow with a unicode, and style it */
     .caret::before {

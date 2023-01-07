@@ -1,4 +1,6 @@
-﻿namespace BlazorComponentRegistry
+﻿using System.Collections.Immutable;
+
+namespace BlazorComponentRegistry
 {
     public class ComponentRegistryEntry
     {
@@ -9,6 +11,7 @@
         public ComponentRegistryEntry ParentComponent { get; set; }
         public List<ComponentRegistryEntry> ChildComponents { get; set; } = new();
         public Dictionary<string, object?> Parameters { get; set; } = new();
+        public ImmutableArray<string> Routes { get; set; } = new();
         public bool Expanded { get; set; } = false;
     };
 }

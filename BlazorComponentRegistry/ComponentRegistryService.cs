@@ -13,7 +13,7 @@ namespace BlazorComponentRegistry
             ComponentTreeChanged?.Invoke();
         }
 
-        public ComponentRegistryEntry RegisterComponent(string parentComponentGuid, Type type, string guid = null, Dictionary<string, object?> parameters = null)
+        public ComponentRegistryEntry RegisterComponent(string parentComponentGuid, Type type, string guid = null, Dictionary<string, object?> parameters = null, ImmutableArray<string> routes = new())
         {
             if (type == null)
             {
@@ -33,7 +33,8 @@ namespace BlazorComponentRegistry
                 ComponentGuid = guid,
                 //ComponentName = componentName,
                 ParentComponentGuid = parentComponentGuid,
-                Parameters = parameters
+                Parameters = parameters,
+                Routes = routes
             };
             var selfEntry = FindEntryInTree(guid);
             if (selfEntry != null)
@@ -149,7 +150,5 @@ namespace BlazorComponentRegistry
         {
             return _components.ToImmutableList();
         }
-
-
     }
 }

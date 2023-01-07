@@ -8,13 +8,15 @@
         <span style="display: inline;" @onclick="ToggleDisplayTree" class="caret @(DisplayTree ? "caret-down" : "")" title="Toggle the visibility of the component registry tree main area.">
         </span>
         <h5>Blazor Component Registry Tree</h5>
-        <img src="_content/BlazorComponentRegistry/images/icon-128.png" alt="Blazor Icon" class="blazor-img" />
+        <a href="https://dotnet.microsoft.com/en-us/apps/aspnet/web-apps/blazor" target="_blank" rel="noreferrer">
+            <img src="_content/BlazorComponentRegistry/images/icon-128.png" alt="Blazor Icon" class="blazor-img" />
+        </a>
     </div>
     @if (DisplayTree)
     {
         <div class="component-tree-wrapper @(DisplayTree ? "expanded" : "")">
             <div style="flex:auto;">
-                <button style="border-radius: 10px; background-color: #5c2d91; color: black; margin: 5px;" @onclick="CollapseTree" @onclick:preventDefault>Collapse Tree</button>
+                <button class="collapse-btn" @onclick="CollapseTree" @onclick:preventDefault title="Collapse the expanded nodes in the component tree.">Collapse Tree</button>
                 @* This only operates on the root level components, which then recurse inside the ComponentRegistryTree component.*@
                 @if (components != null && components.Count > 0)
                 {
@@ -92,8 +94,19 @@
                                 <li>None</li>
                             }
                         </ul>
+                        @if (selectedEntry.Routes.Length > 0)
+                        {
+                            <label>Routes:</label>
+                            <ul>
+                                @foreach (string route in selectedEntry.Routes)
+                                {
+                                    <li>@route</li>
+                                }
+                            </ul>
+                        }
+                        @*<label>Scoped CSS</label>*@
                     </div>
-                    @*<label>Scoped CSS</label>*@
+                  
                 }
             </div>
         </div>

@@ -1,11 +1,22 @@
 ﻿using Microsoft.AspNetCore.Components;
+using System.Collections.Immutable;
 using System.Reflection;
 
 namespace BlazorComponentRegistry
 {
     public static class ComponentBaseExtensions
     {
-        public static Dictionary<string, object?> GetPublicProperties(this ComponentBase component, bool includeInherited = false, bool includeCascading = true, bool includeNonParameters = true)
+        public static ImmutableArray<string> GetRoutes(this ComponentBase component)
+        {
+            return component.GetType().CustomAttributes
+                .Where(ca => ca.AttributeType == typeof(RouteAttribute))
+                .Select(p => p.ConstructorArguments.FirstOrDefault())
+                .Where(conArg => conArg != null)
+                .Select(conArg => conArg.Value.ToString())
+                .ToImmutableArray();
+        }
+
+        public static Dictionary<string, object?> GetPublicProperties(this ComponentBase component, bool includeInherited = true, bool includeCascading = true, bool includeNonParameters = true)
         {
             BindingFlags bindingFlags = BindingFlags.Public | BindingFlags.Instance;
             if (!includeInherited)

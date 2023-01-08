@@ -1,0 +1,10 @@
+﻿.component-parameters-wrapper {
+    text-indent: 1em;
+}
+    .component-parameters-wrapper label {
+        margin: 0;
+    }
+
+    .component-parameters-wrapper ul {
+        list-style: none;
+    }

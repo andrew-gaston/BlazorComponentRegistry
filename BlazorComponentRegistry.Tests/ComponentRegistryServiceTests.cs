@@ -1,6 +1,3 @@
-using BlazorComponentRegistry;
-using Microsoft.AspNetCore.Components;
-
 namespace andrewgastondev.Tests
 {
     public class ComponentRegistryServiceTests

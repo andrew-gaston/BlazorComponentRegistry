@@ -1,8 +1,12 @@
 ﻿# Blazor Component Registry
-
 This library allows you to view which of your Blazor components are active on the page, as well as their current parameter values. The intended functionality is similar to React Dev Tools and Vue Dev Tools.
 
 ## Examples
+
+### Add the following to your _Imports.razor file
+```csharp
+@using BlazorComponentRegistry
+```
 
 ### Register the ComponentRegistryService in Program.cs
 

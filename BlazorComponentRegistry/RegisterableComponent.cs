@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using BlazorComponentRegistry.Services;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
 using System.Reflection;
 
@@ -9,9 +10,7 @@ namespace BlazorComponentRegistry
         public string ComponentGuid { get; internal set; }
         [Inject] IComponentRegistryService componentRegistry { get; set; }
         [Parameter] public string ParentComponentGuid { get; set; }
-        //[Parameter] public bool IncludeInheritedProperties { get; set; } = false;
-        //[Parameter] public bool IncludeNonParameterProperties { get; set; } = true;
-        //[Parameter] public bool IncludeCascadingParameterProperties { get; set; } = true;
+        //[CascadingParameter] public string RootComponentGuid { get; set; }
 
         protected override Task OnInitializedAsync()
         {
@@ -21,7 +20,7 @@ namespace BlazorComponentRegistry
 
         protected override void OnParametersSet()
         {
-            componentRegistry.UpdateComponentParameters(ComponentGuid, this.GetPublicProperties());
+            componentRegistry.UpdateComponentProperties(ComponentGuid, this.GetPublicProperties());
             base.OnParametersSet();
         }
 
@@ -29,17 +28,5 @@ namespace BlazorComponentRegistry
         {
             componentRegistry.UnregisterComponent(ComponentGuid);
         }
-
-        //protected override void BuildRenderTree(RenderTreeBuilder builder)
-        //{
-        //    base.BuildRenderTree(builder);
-        //    builder.OpenRegion(0);
-        //    builder.OpenComponent<CascadingValue<string>>(1);
-        //    builder.AddAttribute(1, "TValue", typeof(string));
-        //    builder.AddAttribute(2, "Value", ComponentGuid);
-        //    builder.AddAttribute(3, "Name", "ParentComponentGuid");
-        //    builder.CloseComponent();
-        //    builder.CloseRegion();
-        //}
     }
 }

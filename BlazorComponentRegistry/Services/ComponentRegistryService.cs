@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Immutable;
 
-namespace BlazorComponentRegistry
+namespace BlazorComponentRegistry.Services
 {
     public class ComponentRegistryService : IComponentRegistryService
     {
@@ -13,7 +13,7 @@ namespace BlazorComponentRegistry
             ComponentTreeChanged?.Invoke();
         }
 
-        public ComponentRegistryEntry RegisterComponent(string parentComponentGuid, Type type, string guid = null, Dictionary<string, object?> parameters = null, ImmutableArray<string> routes = new())
+        public ComponentRegistryEntry RegisterComponent(string parentComponentGuid, Type type, string guid = null, ImmutableArray<ComponentRegistryEntryProperty> properties = new(), ImmutableArray<string> routes = new())
         {
             if (type == null)
             {
@@ -33,7 +33,7 @@ namespace BlazorComponentRegistry
                 ComponentGuid = guid,
                 //ComponentName = componentName,
                 ParentComponentGuid = parentComponentGuid,
-                Parameters = parameters,
+                Properties = properties,
                 Routes = routes
             };
             var selfEntry = FindEntryInTree(guid);
@@ -54,10 +54,10 @@ namespace BlazorComponentRegistry
             return entry;
         }
 
-        public void UpdateComponentParameters(string guid, Dictionary<string, object?> parameters)
+        public void UpdateComponentProperties(string guid, ImmutableArray<ComponentRegistryEntryProperty> properties = new())
         {
             var selfEntry = FindEntryInTree(guid);
-            selfEntry.Parameters = parameters;
+            selfEntry.Properties = properties;
             OnComponentTreeChanged();
         }
 

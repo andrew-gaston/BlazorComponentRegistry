@@ -1,0 +1,90 @@
+﻿@using System.Collections.Immutable
+@using BlazorComponentRegistry
+@inherits RegisterableComponent
+@inject BlazorComponentRegistry.Services.IComponentRegistryService componentRegistry
+@implements IDisposable
+
+<div class="registry-wrapper">
+    <div class="registry-title">
+        <span style="display: inline;" @onclick="ToggleDisplayTree" class="caret @(DisplayTree ? "caret-down" : "")" title="Toggle the visibility of the component registry tree main area.">
+        </span>
+        <h5>Blazor Component Registry Tree</h5>
+        <a href="https://dotnet.microsoft.com/en-us/apps/aspnet/web-apps/blazor" target="_blank" rel="noreferrer">
+            <img src="_content/BlazorComponentRegistry/images/icon-128.png" alt="Blazor Icon" class="blazor-img" />
+        </a>
+    </div>
+    @if (DisplayTree)
+    {
+        <div class="component-tree-wrapper @(DisplayTree ? "expanded" : "")">
+            <div style="flex:auto;">
+                <button class="collapse-btn" @onclick="CollapseTree" @onclick:preventDefault title="Collapse the expanded nodes in the component tree.">Collapse Tree</button>
+                @* This only operates on the root level components, which then recurse inside the ComponentRegistryTree component.*@
+                @if (ComponentsPopulated)
+                {
+                    @foreach (ComponentRegistryEntry entry in components)
+                    {
+                        <ComponentRegistryTree SelectedEntry="selectedEntry" Trunk="entry" SelectedEntryChanged="SetSelectedEntry"></ComponentRegistryTree>
+                    }          
+                }
+            </div>
+            <div id="param-col" style="flex:auto;">
+               <SelectedEntryInfo SelectedEntry="selectedEntry"></SelectedEntryInfo>
+            </div>
+        </div>
+    }
+</div>
+
+@code {
+    private bool DisplayTree = true;
+    private IImmutableList<ComponentRegistryEntry> components;
+    private IList<ComponentRegistryEntry> ExpandedNodes = new List<ComponentRegistryEntry>();
+    private ComponentRegistryEntry selectedEntry;
+    private bool firstLoad = true;
+    private bool ComponentsPopulated => components != null && components.Count > 0;
+
+    private async void registry_ComponentTreeChanged()
+    {
+        // https://stackoverflow.com/questions/56477829/how-to-fix-the-current-thread-is-not-associated-with-the-renderers-synchroniza
+        await InvokeAsync(() =>
+        {
+            components = componentRegistry.GetComponents();
+            StateHasChanged();
+        });
+    }
+
+    protected override void OnInitialized()
+    {
+        if (firstLoad)
+        {
+            components = componentRegistry.GetComponents();
+            if (ComponentsPopulated)
+            {
+                selectedEntry = components.First();
+            }
+            componentRegistry.ComponentTreeChanged += registry_ComponentTreeChanged;
+            firstLoad = false;
+        }
+        base.OnInitialized();
+    }
+
+    private void SetSelectedEntry(ComponentRegistryEntry entry)
+    {
+        selectedEntry = entry;
+    }
+
+    private void ToggleDisplayTree()
+    {
+        DisplayTree = !DisplayTree;
+    }
+
+    private void CollapseTree()
+    {
+        componentRegistry.CollapseTree();
+        selectedEntry = null;
+    }
+
+    public void Dispose()
+    {
+        componentRegistry.ComponentTreeChanged -= registry_ComponentTreeChanged;
+    }
+}

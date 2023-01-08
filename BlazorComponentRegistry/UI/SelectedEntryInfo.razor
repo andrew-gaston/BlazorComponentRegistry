@@ -1,0 +1,109 @@
+﻿@if (SelectedEntry != null)
+{
+    <div class="component-parameters-wrapper">
+        <label>Public Properties:</label>
+        <label><input type="checkbox" checked="@displayParameters" @bind-value="@displayParameters" /> Parameters</label>
+        <label><input type="checkbox" checked="@displayCascadingParameters" @bind-value="@displayCascadingParameters" /> Cascading Parameters</label>
+        @*<label><input type="checkbox" checked="@displayInheritedProperties" @bind-value="@displayInheritedProperties" /> Inherited</label>*@
+        <ul>
+            @if (SelectedEntry.Properties != null && SelectedEntry.Properties.Length > 0)
+            {
+                @foreach (var propCategory in SelectedEntry.Properties.GroupBy(p => p.Category))
+                {
+                    @if (propCategory.Key == "Uncategorized" || (propCategory.Key == "Parameter" && displayParameters) || (propCategory.Key == "CascadingParameter" && displayCascadingParameters))
+                    {
+                        <li>
+                            <label>@(propCategory.Key.Contains("Parameter") ? propCategory.Key + "s" : propCategory.Key)</label>
+                            <ul>
+                                @foreach (var prop in propCategory)
+                                {
+                                    <li>
+                                        @if (prop.Value != null)
+                                        {
+                                            @* Do the reflection once per loop since it is expensive *@
+                                            Type type = prop.Value.GetType();
+                                            @*
+                                            There is probably a better way to accomplish this.
+                                            For primitive types, I am being picky about how they are displayed.
+                                            For example, "int" is more relatable than Int32
+                                            *@
+                                            @if (type == typeof(string))
+                                            {
+                                                @prop.Name @:(string): @($"\"{prop.Value}\"")
+                                            }
+                                            else if (type == typeof(bool))
+                                            {
+                                                @prop.Name @:(bool): @prop.Value.ToString().ToLower()
+                                            }
+                                            else if (type == typeof(int))
+                                            {
+                                                @prop.Name @:(int): @prop.Value
+                                            }
+                                            else if (type == typeof(long))
+                                            {
+                                                @prop.Name @:(long): @prop.Value
+                                            }
+                                            else if (type == typeof(double))
+                                            {
+                                                @prop.Name @:(double): @prop.Value
+                                            }
+                                            else if (type == typeof(decimal))
+                                            {
+                                                @prop.Name @:(decimal): @prop.Value
+                                            }
+                                            else if (type == typeof(double))
+                                            {
+                                                @prop.Name @:(double): @prop.Value
+                                            }
+                                            else if (type == typeof(float))
+                                            {
+                                                @prop.Name @:(float): @prop.Value
+                                            }
+                                            else if (type == typeof(DateTime))
+                                            {
+                                                @prop.Name @:(DateTime): @prop.Value
+                                            }
+                                            else
+                                            {
+                                                @prop.Name <span>(@($"{type.Name.ToString().Replace(type.Namespace ?? "", "").ToLower()}")):</span> @prop.Value
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <span>@prop.Name:</span>
+                                            @: null
+                                        }
+                                    </li>
+                                }
+                            </ul>
+                        </li>
+                    }
+                }
+            }
+            else
+            {
+                <li>None</li>
+            }
+        </ul>
+        @if (SelectedEntry.Routes.Length > 0)
+        {
+            <label>Routes:</label>
+            <ul>
+                @foreach (string route in SelectedEntry.Routes)
+                {
+                    <li>@route</li>
+                }
+            </ul>
+        }
+    </div>
+}
+else
+{
+    <p>Select a component to view its information.</p>
+}
+@code {
+    [Parameter] public ComponentRegistryEntry SelectedEntry { get; set; }
+    private bool displayParameters = true,
+             displayCascadingParameters = true,
+             displayInheritedProperties = true;
+}

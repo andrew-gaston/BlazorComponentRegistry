@@ -1,6 +1,8 @@
 ﻿# Blazor Component Registry
 ![Build](https://github.com/andrew-gaston/BlazorComponentRegistry/actions/workflows/build.yml/badge.svg)
 
+![BlazorComponentRegistry User Interface](https://raw.githubusercontent.com/andrew-gaston/BlazorComponentRegistry/master/images/blazor-component-registry-ui.png)
+
 This library allows you to view which of your Blazor components are active on the page, as well as their current parameter values. The intended functionality is similar to React Dev Tools and Vue Dev Tools.
 
 ## Installation

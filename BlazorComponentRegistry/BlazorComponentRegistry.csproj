@@ -3,13 +3,17 @@
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
+    <Nullable>disable</Nullable>
+    <PackageId>BlazorComponentRegistry</PackageId>
+    <Version>0.0.1</Version>
+    <Authors>Andrew Gaston</Authors>
+    <PackageDescription>View your blazor component tree and real-time information about your components at runtime.</PackageDescription>
+    <RepositoryUrl>https://github.com/andrew-gaston/BlazorComponentRegistry</RepositoryUrl>
   </PropertyGroup>
 
 	<ItemGroup>
 		<SupportedPlatform Include="browser" />
 	</ItemGroup>
-
 
 	<ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="7.0.1" />

@@ -1,11 +1,17 @@
 ﻿# Blazor Component Registry
+![Build](https://github.com/andrew-gaston/BlazorComponentRegistry/actions/workflows/build.yml/badge.svg)
+
 This library allows you to view which of your Blazor components are active on the page, as well as their current parameter values. The intended functionality is similar to React Dev Tools and Vue Dev Tools.
 
-## Examples
-
+## Installation
+```
+dotnet add package BlazorComponentRegistry
+```
 ### Add the following to your _Imports.razor file
 ```csharp
 @using BlazorComponentRegistry
+@using BlazorComponentRegistry.Services
+@using BlazorComponentRegistry.UI
 ```
 
 ### Register the ComponentRegistryService in Program.cs
@@ -40,6 +46,7 @@ public static async Task Main(string[] args)
     app.Run();
 }
 ```
+## Example Usage
 
 ### Automatically Register and Unregister a component by inheriting from RegisterableComponent
 
@@ -98,14 +105,12 @@ To view the currently active, registered components, use the ComponentRegistry c
 <ComponentRegistry/>
 ```
 
+Make sure you pass the ParentGuid from the parent to all registered child components.
+
 ## Limitations
 - Each component you wish to monitor must either be registered manually in the component's code OR inherit from the RegisterableComponent base class provided by this library.
 - External Blazor Components, such as those provided by NuGet package, can't be tracked directly.
 - Recursive (self-referencing) Components are not supported.
-
-## Roadmap
-- Hovering over/selecting a component in the tree should highlight the component in the page
-- Hovering over/selecting a component in the tree should allow you to view its scoped css
 
 ### Notes
 - Open Github Issue for Blazor Dev Tools: https://github.com/dotnet/aspnetcore/issues/44825
